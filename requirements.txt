@@ -1,0 +1,15 @@
+numpy>=1.26
+faiss-cpu>=1.8
+sentence-transformers>=3.0
+transformers>=4.44
+torch>=2.3
+spacy>=3.7
+datasets>=2.20
+networkx>=3.2
+pdfplumber>=0.10
+pandas>=2.0
+langchain-text-splitters>=0.3
+fastapi>=0.115
+uvicorn[standard]>=0.32
+pydantic>=2.0
+python-multipart>=0.0.7

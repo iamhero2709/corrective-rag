@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+myenv/
+.venv/
+venv/
+env/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+data/*.pdf
+data/*.docx
+data/*.txt
+*.log
+.pytest_cache/
+.ruff_cache/
+
+# HuggingFace cache
+.cache/
+.cache/huggingface/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Results (keep for paper, but large files)
+results/*.json
+!results/README.md

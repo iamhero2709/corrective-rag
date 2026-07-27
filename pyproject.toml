@@ -1,0 +1,38 @@
+[project]
+name = "corrective-rag"
+version = "0.3.0"
+description = "Self-corrective small-model RAG with HRR verification, Graph RAG, and agentic flows"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.26",
+    "faiss-cpu>=1.8",
+    "sentence-transformers>=3.0",
+    "transformers>=4.44",
+    "torch>=2.3",
+    "spacy>=3.7",
+    "networkx>=3.2",
+    "datasets>=2.20",
+    "fastapi>=0.111",
+    "uvicorn[standard]>=0.30",
+    "pydantic>=2.7",
+    "pdfplumber>=0.10",
+    "pandas>=2.0",
+    "langchain>=0.2",
+]
+
+[project.scripts]
+rag = "cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "httpx>=0.27", "ruff>=0.5"]
+cli = ["huggingface-hub>=0.24"]
+hybrid = ["rank-bm25>=0.2"]
+quant = ["bitsandbytes>=0.43"]
+all = ["corrective-rag[dev,cli,hybrid,quant]"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

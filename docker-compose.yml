@@ -1,0 +1,19 @@
+services:
+  rag:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      RAG_LOG_JSON: "true"
+      RAG_DEVICE: "auto"
+      RAG_INDEX_DIR: "/data/index"
+    volumes:
+      - rag-index:/data/index
+      - hf-cache:/models
+    deploy:
+      resources:
+        limits:
+          memory: 8g
+volumes:
+  rag-index:
+  hf-cache:
