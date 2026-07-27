@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 import hashlib
 
 import pdfplumber
@@ -103,7 +103,7 @@ class SmartChunker:
                 doc_type=metadata.get('doc_type', 'text'),
                 word_count=len(chunk_text.split()),
                 char_count=len(chunk_text),
-                timestamp=datetime.utcnow().isoformat(),
+                timestamp=datetime.now(timezone.utc).isoformat(),
                 source_hash=metadata.get('source_hash', ''),
                 metadata=metadata
             )
@@ -184,7 +184,7 @@ class PDFLoader:
     def __init__(self, config: Settings):
         self.config = config
         self.chunker = SmartChunker(
-            chunk_size=config.RAG_CHUNK_SIZE if hasattr(config, 'RAG_CHUNK_SIZE') else 512,
+            chunk_size=512,
             chunk_overlap=100
         )
         self.table_extractor = TableExtractor()
@@ -234,24 +234,23 @@ class PDFLoader:
                             documents[doc.doc_id] = doc
                     
                     # Extract tables
-                    if self.config.RAG_EXTRACT_TABLES if hasattr(self.config, 'RAG_EXTRACT_TABLES') else True:
-                        tables = page.extract_tables() or []
-                        for table_idx, table in enumerate(tables):
-                            table_text = self.table_extractor.extract_and_convert(table)
-                            
-                            table_docs = self.chunker.chunk(
-                                table_text,
-                                metadata={
-                                    'source_file': pdf_path.name,
-                                    'page_num': page_num,
-                                    'doc_type': 'table',
-                                    'table_idx': table_idx,
-                                    'source_hash': file_hash,
-                                    'original_table': table  # For debugging
-                                }
-                            )
-                            for doc in table_docs:
-                                documents[doc.doc_id] = doc
+                    tables = page.extract_tables() or []
+                    for table_idx, table in enumerate(tables):
+                        table_text = self.table_extractor.extract_and_convert(table)
+                        
+                        table_docs = self.chunker.chunk(
+                            table_text,
+                            metadata={
+                                'source_file': pdf_path.name,
+                                'page_num': page_num,
+                                'doc_type': 'table',
+                                'table_idx': table_idx,
+                                'source_hash': file_hash,
+                                'original_table': table  # For debugging
+                            }
+                        )
+                        for doc in table_docs:
+                            documents[doc.doc_id] = doc
         
         except Exception as e:
             logger.error(f"Error loading PDF {pdf_path}: {e}")

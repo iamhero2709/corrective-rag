@@ -145,7 +145,21 @@ def load_pptx(path: str) -> List[LoadedDocument]:
 def load_url(url: str) -> List[LoadedDocument]:
     try:
         import urllib.request
+        import urllib.parse
         from html.parser import HTMLParser
+
+        parsed = urllib.parse.urlparse(url)
+        if parsed.scheme not in ("http", "https"):
+            logger.warning("URL loader only supports http/https, got: %s", parsed.scheme)
+            return []
+        # Block private/internal IPs to prevent SSRF
+        hostname = parsed.hostname or ""
+        if hostname in ("localhost", "127.0.0.1", "0.0.0.0", "::1", ""):
+            logger.warning("SSRF blocked: %s", hostname)
+            return []
+        if hostname.startswith("169.254.") or hostname.startswith("10.") or hostname.startswith("192.168."):
+            logger.warning("SSRF blocked: %s", hostname)
+            return []
 
         class TextExtractor(HTMLParser):
             def __init__(self):
@@ -268,7 +282,9 @@ def load_json(path: str) -> List[LoadedDocument]:
     import json
     data = json.loads(Path(path).read_text(encoding="utf-8"))
     if isinstance(data, dict):
-        return [LoadedDocument(doc_id=k, text=v, source=path, doc_type="json") for k, v in data.items()]
+        return [LoadedDocument(doc_id=str(k), text=str(v), source=path, doc_type="json") for k, v in data.items()]
+    if isinstance(data, list):
+        return [LoadedDocument(doc_id=str(i), text=str(item), source=path, doc_type="json") for i, item in enumerate(data)]
     return []
 
 

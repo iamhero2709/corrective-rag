@@ -106,7 +106,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Corrective Graph-Agentic RAG",
-    version="0.2.0",
+    version="0.3.0",
     lifespan=lifespan,
 )
 app.add_middleware(
@@ -116,7 +116,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-_components: dict = {}
 
 
 class IndexRequest(BaseModel):
@@ -215,7 +214,7 @@ async def query(req: QueryRequest):
 
 @app.post("/query/stream")
 async def query_stream(req: QueryRequest):
-    engine = _components["corrective"]
+    engine = _components[req.mode if req.mode == "agentic" else "corrective"]
     rid = uuid.uuid4().hex[:12]
     t0 = time.time()
 

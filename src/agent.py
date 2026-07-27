@@ -134,7 +134,7 @@ class GraphAgenticRAG:
     # ---------- main loop ----------
 
     def run(self, question: str):
-        from pipeline import RAGAnswer  # reuse the answer dataclass
+        from src.pipeline import RAGAnswer
 
         state = AgentState(question=question)
         trace = PipelineTrace()
@@ -171,12 +171,12 @@ class GraphAgenticRAG:
         return self._finalize(question, None, state, trace)
 
     def _finalize(self, question: str, proposed: str | None, state: AgentState, trace: PipelineTrace):
-        from pipeline import RAGAnswer
+        from src.pipeline import RAGAnswer
 
         context = [m for m in state.memory if not m.startswith("(")]
         if not context:
             return RAGAnswer("I don't have reliable information to answer this.",
-                             "ABSTAIN", [], trace)
+                             "ABSTAIN", [], trace=trace)
 
         out = self.generator.answer(question, context)
         trace.log("agent_generate", self_check=out.self_check,
@@ -186,5 +186,5 @@ class GraphAgenticRAG:
                       "UNSUPPORTED": "LOW", "SKIPPED": "LOW"}[out.self_check]
         if out.insufficient:
             return RAGAnswer("I don't have reliable information to answer this.",
-                             "ABSTAIN", context, trace)
-        return RAGAnswer(out.answer, confidence, context, trace)
+                             "ABSTAIN", context, trace=trace)
+        return RAGAnswer(out.answer, confidence, context, trace=trace)

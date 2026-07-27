@@ -5,7 +5,7 @@ Production monitoring: performance metrics, health checks, alerts.
 import time
 import logging
 from typing import Dict, Optional, Any, Callable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import wraps
 import json
 from collections import deque
@@ -148,7 +148,7 @@ class HealthCheck:
     def run_checks(self) -> Dict[str, Any]:
         """Run all health checks"""
         results = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "components": {},
             "overall_healthy": True
         }
@@ -158,7 +158,7 @@ class HealthCheck:
                 status = info["check_func"]()
                 results["components"][component] = {
                     "healthy": status,
-                    "timestamp": datetime.utcnow().isoformat()
+                    "timestamp": datetime.now(timezone.utc).isoformat()
                 }
                 if not status:
                     results["overall_healthy"] = False
@@ -168,7 +168,7 @@ class HealthCheck:
                 results["components"][component] = {
                     "healthy": False,
                     "error": str(e),
-                    "timestamp": datetime.utcnow().isoformat()
+                    "timestamp": datetime.now(timezone.utc).isoformat()
                 }
                 results["overall_healthy"] = False
         
@@ -258,7 +258,7 @@ class RetrievalQualityMonitor:
         self.retrieved_chunks.append({
             "num_chunks": num_chunks,
             "top_scores": top_scores,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
         if self.db:
@@ -271,7 +271,7 @@ class RetrievalQualityMonitor:
         self.verification_results.append({
             "verdict": verdict,
             "score": score,
-            "timestamp": datetime.utcnow().isoformat()
+            "timestamp": datetime.now(timezone.utc).isoformat()
         })
         
         if self.db:
@@ -315,7 +315,7 @@ class PerformanceDashboard:
     def get_summary(self) -> Dict:
         """Get comprehensive performance summary"""
         return {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "requests": self.request_monitor.get_stats(),
             "cache": self.cache_monitor.get_stats(),
             "retrieval": self.retrieval_monitor.get_stats(),

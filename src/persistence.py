@@ -8,7 +8,7 @@ import json
 import logging
 from typing import Dict, List, Optional, Any
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import pickle
 from src.logging_utils import setup_logger
 
@@ -226,7 +226,7 @@ class DocumentStore:
         """Cache a query result"""
         try:
             query_hash = hash(query.lower()) % (2**63)
-            expires_at = datetime.utcnow() + timedelta(hours=ttl_hours)
+            expires_at = datetime.now(timezone.utc) + timedelta(hours=ttl_hours)
             
             cursor = self.conn.cursor()
             cursor.execute("""
@@ -349,7 +349,7 @@ class DocumentStore:
     
     def get_metrics(self, name: str, hours: int = 24) -> List[Dict]:
         """Get metrics from last N hours"""
-        cutoff = datetime.utcnow() - timedelta(hours=hours)
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
         cursor = self.conn.cursor()
         cursor.execute("""
             SELECT * FROM metrics 
