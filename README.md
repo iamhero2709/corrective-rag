@@ -1,6 +1,10 @@
 <div align="center">
 
-# Corrective RAG
+```
+  ╔═══════════════════════════════════════════════════╗
+  ║           C O R R E C T I V E   R A G             ║
+  ╚═══════════════════════════════════════════════════╝
+```
 
 ### Self-Corrective Retrieval-Augmented Generation with NLI Verification
 
