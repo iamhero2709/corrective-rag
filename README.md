@@ -1,10 +1,12 @@
 <div align="center">
 
-```
+<p align="center">
+<pre>
 ╔═══════════════════════════════════════════════════╗
 ║           C O R R E C T I V E   R A G             ║
 ╚═══════════════════════════════════════════════════╝
-```
+</pre>
+</p>
 
 ### Self-Corrective Retrieval-Augmented Generation with NLI Verification
 
