@@ -2,7 +2,25 @@
 name = "corrective-rag"
 version = "0.3.0"
 description = "Self-corrective small-model RAG with HRR verification, Graph RAG, and agentic flows"
+readme = "README.md"
+license = {text = "MIT"}
 requires-python = ">=3.10"
+authors = [
+    {name = "Randhir kumar", email = "randhir2709vns@gmail.com"}
+]
+keywords = ["rag", "retrieval-augmented-generation", "nli", "verification", "small-model", "edge-device"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "numpy>=1.26",
     "faiss-cpu>=1.8",

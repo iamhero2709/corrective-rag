@@ -42,6 +42,55 @@ Unlike standard RAG that blindly accepts retrieved chunks, Corrective RAG adds a
 - **Professional CLI** — Rich-formatted output with spinners, tables, and progress bars
 - **Web Interface** — Chat UI with streaming, markdown rendering, and trace panels
 
+## Demo
+
+### CLI Demo
+
+```bash
+# Run the demo script
+./scripts/demo.sh
+
+# Record with asciinema
+./scripts/record_demo.sh
+
+# Convert to GIF (requires agg)
+pip install agg
+agg demo.cast demo.gif --cols 80 --rows 24
+```
+
+### Quick Demo
+
+```bash
+# Ask a question
+rag query "Who directed Inception?"
+
+# With verbose trace
+rag query "What awards did Inception win?" --verbose
+
+# Start web interface
+rag serve
+# Then open http://localhost:8000
+```
+
+### Example Output
+
+```
+$ rag query "Who directed Inception?"
+
+Answer: Christopher Nolan
+
+Metric       Value
+───────────  ─────
+Confidence   HIGH
+Latency      4.2s
+Chunks used  2
+
+Sources:
+  #  Document   Score  Snippet
+  1  nolan      0.85  Christopher Nolan directed Inception...
+  2  nolan2     0.72  Inception won four Academy Awards...
+```
+
 ## Quick Start
 
 ```bash
@@ -199,10 +248,49 @@ rag benchmark --ablation --samples 50
 
 ## Docker
 
+### Quick Start
+
 ```bash
+# Pull from Docker Hub
+docker pull randhir-kumar/corrective-rag:0.3.0
+
+# Run
+docker run -p 8000:8000 randhir-kumar/corrective-rag:0.3.0
+
+# Or use docker compose
 docker compose up --build
-# or
-make docker
+```
+
+### Build Locally
+
+```bash
+# Build image
+docker build -t corrective-rag:0.3.0 .
+
+# Run
+docker run -p 8000:8000 corrective-rag:0.3.0
+
+# With GPU support (requires nvidia-docker)
+docker run --gpus all -p 8000:8000 corrective-rag:0.3.0
+```
+
+### Docker Hub
+
+```bash
+# Pull latest
+docker pull randhir-kumar/corrective-rag:latest
+
+# Pull specific version
+docker pull randhir-kumar/corrective-rag:0.3.0
+```
+
+### Environment Variables
+
+```bash
+docker run -p 8000:8000 \
+  -e RAG_GEN_MODEL=Qwen/Qwen2.5-1.5B-Instruct \
+  -e RAG_EMBED_MODEL=BAAI/bge-small-en-v1.5 \
+  randhir-kumar/corrective-rag:0.3.0
 ```
 
 ## Testing
