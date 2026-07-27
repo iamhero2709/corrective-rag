@@ -237,18 +237,12 @@ corrective-rag/
 
 ### Key Findings
 
-```mermaid
-bar
-    title Ablation Results (Exact Match %)
-    x-axis [A0, A1, A2, A3, A4]
-    y-axis "Exact Match %" 0 --> 50
-    bar [30, 30, 40, 20, 20]
-```
-
-1. **NLI verification improves accuracy** — A2 achieves 40% EM vs 30% vanilla (+10% improvement)
-2. **NLI also reduces latency** — 33.4s vs 42.1s (21% faster) by filtering bad chunks early
-3. **HRR structural hurts at 0.5B** — A3/A4 both show -10% EM vs vanilla due to noisy role-filler extraction
-4. **NLI is the critical signal** — Embedding alone doesn't help; NLI provides the discrimination needed
+| Finding | Evidence |
+|---------|----------|
+| **NLI improves accuracy** | A2 = 40% EM vs A0 = 30% vanilla (+10%) |
+| **NLI reduces latency** | A2 = 33.4s vs A0 = 42.1s (21% faster) |
+| **HRR hurts at 0.5B** | A3/A4 = 20% EM vs A0 = 30% (-10%) |
+| **NLI is the critical signal** | A1 (embed only) = 30% — no improvement without NLI |
 
 ### Edge Device Profile
 
