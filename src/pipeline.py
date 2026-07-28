@@ -150,7 +150,7 @@ class CorrectiveRAG:
         }[out.self_check]
 
         citations = [
-            Citation(doc_id=c.doc_id, chunk_id=c.chunk_id, text=c.text[:150], score=v.fused_score)
+            Citation(doc_id=c.doc_id, chunk_id=c.chunk_id, text=c.text[:500], score=v.fused_score)
             for c, v in selected
         ]
         return RAGAnswer(out.answer, confidence, context, citations=citations,

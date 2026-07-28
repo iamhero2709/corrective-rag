@@ -50,10 +50,11 @@ flowchart LR
     SC -->|UNSUPPORTED| AB[ABSTAIN]
     R2 --> A
 
-    style V fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
-    style F fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style A fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
-    style AB fill:#ffebee,stroke:#d32f2f,stroke-width:2px
+    style V fill:#2196F3,stroke:#1565C0,color:#fff,stroke-width:2px
+    style F fill:#FF9800,stroke:#E65100,color:#fff,stroke-width:2px
+    style A fill:#4CAF50,stroke:#2E7D32,color:#fff,stroke-width:2px
+    style AB fill:#F44336,stroke:#C62828,color:#fff,stroke-width:2px
+    style SC fill:#9C27B0,stroke:#6A1B9A,color:#fff,stroke-width:2px
 ```
 
 ## Key Features
@@ -151,8 +152,10 @@ flowchart TB
     API --> SSE
     DB -.-> R
 
-    style Core fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px
-    style Storage fill:#fce4ec,stroke:#e91e63,stroke-width:2px
+    style Core fill:#3F51B5,stroke:#1A237E,color:#fff,stroke-width:2px
+    style Storage fill:#E91E63,stroke:#880E4F,color:#fff,stroke-width:2px
+    style Input fill:#009688,stroke:#004D40,color:#fff,stroke-width:2px
+    style Output fill:#FF5722,stroke:#BF360C,color:#fff,stroke-width:2px
 ```
 
 ### Verification Pipeline (Detail)
@@ -191,9 +194,10 @@ flowchart TD
 
     GEN --> ANSWER["Answer: Christopher Nolan"]
 
-    style F1 fill:#e8f5e9,stroke:#388e3c
-    style F2 fill:#ffebee,stroke:#d32f2f
-    style ANSWER fill:#e3f2fd,stroke:#1976d2
+    style F1 fill:#4CAF50,stroke:#2E7D32,color:#fff,stroke-width:2px
+    style F2 fill:#F44336,stroke:#C62828,color:#fff,stroke-width:2px
+    style ANSWER fill:#2196F3,stroke:#1565C0,color:#fff,stroke-width:2px
+    style Verify fill:#607D8B,stroke:#37474F,color:#fff,stroke-width:2px
 ```
 
 ### Project Structure

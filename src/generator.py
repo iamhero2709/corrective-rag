@@ -12,7 +12,9 @@ Context:
 Question: {question}
 
 Rules:
-- Give the SHORT answer only (a name, date, number, yes/no, or brief phrase)
+- Extract ALL requested information from the context
+- If the question asks for multiple items (e.g. "name and email"), provide each on a separate line
+- Give SHORT answers only (names, dates, numbers, emails, yes/no, brief phrases)
 - Do NOT write full sentences or explanations
 
 Answer:"""
@@ -26,9 +28,11 @@ Question: {question}
 Proposed answer: {answer}
 
 Reply with exactly one word:
-- SUPPORTED (every claim in the answer is backed by the context)
-- PARTIAL (some claims backed, some not)
+- SUPPORTED (every piece of information in the answer is backed by the context)
+- PARTIAL (some pieces are backed, some are missing or wrong)
 - UNSUPPORTED (the answer is not backed by the context)
+
+Note: If the answer contains multiple items (e.g. name AND email), check EACH item separately. If ALL items are found in the context, reply SUPPORTED.
 
 One word:"""
 

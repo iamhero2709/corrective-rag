@@ -97,7 +97,7 @@
         .trace-panel.open { display: block; }
         .trace-step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; padding: 8px 12px; background: var(--surface2); border-radius: 8px; font-size: 12px; }
         .trace-step .step-label { font-weight: 600; color: var(--accent-light); white-space: nowrap; min-width: 60px; }
-        .trace-step .step-detail { color: var(--muted); font-family: 'SF Mono', monospace; font-size: 11px; line-height: 1.5; }
+        .trace-step .step-detail { color: var(--muted); font-family: 'SF Mono', monospace; font-size: 11px; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
         .trace-step .verdict { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; margin-left: 4px; }
         .verdict.correct { background: rgba(34,197,94,0.15); color: var(--correct); }
         .verdict.ambiguous { background: rgba(234,179,8,0.15); color: var(--ambiguous); }
@@ -276,6 +276,7 @@
 
         const msg = document.createElement('div');
         msg.className = `msg ${role}`;
+        const msgId = 'msg_' + Date.now();
 
         if (role === 'assistant') {
             let html = `<div class="answer-text">${renderMarkdown(content)}</div>`;
@@ -287,14 +288,14 @@
                 html += `<span class="latency-badge">&#9201; ${meta.latency.toFixed(1)}s</span>`;
             }
             if (meta?.trace?.length) {
-                html += `<button class="trace-toggle" onclick="this.nextElementSibling.classList.toggle('open')">&#9660; Trace (${meta.trace.length} steps)</button>`;
+                html += `<button class="trace-toggle" onclick="document.getElementById('${msgId}_trace').classList.toggle('open')">&#9660; Trace (${meta.trace.length} steps)</button>`;
             }
             if (meta?.citations?.length) {
-                html += `<button class="trace-toggle" onclick="this.nextElementSibling.classList.toggle('open')" style="margin-top:2px">&#128278; Sources (${meta.citations.length})</button>`;
+                html += `<button class="trace-toggle" onclick="document.getElementById('${msgId}_sources').classList.toggle('open')" style="margin-top:2px">&#128278; Sources (${meta.citations.length})</button>`;
             }
             html += `</div>`;
             if (meta?.trace?.length) {
-                html += `<div class="trace-panel">`;
+                html += `<div class="trace-panel" id="${msgId}_trace">`;
                 meta.trace.forEach(s => {
                     let detail = Object.entries(s).filter(([k])=>k!=='step').map(([k,v])=>`${k}=${typeof v==='object'?JSON.stringify(v):v}`).join(' ');
                     let verdictHtml = '';
@@ -306,7 +307,7 @@
                 html += `</div>`;
             }
             if (meta?.citations?.length) {
-                html += `<div class="trace-panel">`;
+                html += `<div class="trace-panel" id="${msgId}_sources">`;
                 meta.citations.forEach((c, i) => {
                     html += `<div class="trace-step"><span class="step-label" style="min-width:24px">[${i+1}]</span><span class="step-detail"><strong>${escapeHtml(c.doc_id)}</strong> (score: ${c.score.toFixed(2)})<br><small style="color:var(--muted)">${escapeHtml(c.text)}</small></span></div>`;
                 });
